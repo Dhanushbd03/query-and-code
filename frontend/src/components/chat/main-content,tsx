@@ -1,0 +1,97 @@
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Bookmark, Download, Plus, Search } from "lucide-react"
+
+export function MainContent() {
+  return (
+    <div className="flex-1 flex flex-col">
+      <Header />
+      <Content />
+    </div>
+  )
+}
+
+function Header() {
+  return (
+    <div className="p-4 flex justify-between items-center border-b border-gray-800">
+      <div className="flex items-center gap-2">
+        <span className="text-white">Name chat</span>
+        <span className="text-xs px-2 py-0.5 rounded bg-green-500/20 text-green-500">feat-gpt-3.5</span>
+      </div>
+      <div className="flex gap-2">
+        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-300">
+          <Bookmark className="h-4 w-4" />
+        </Button>
+        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-300">
+          <Download className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function Content() {
+  return (
+    <div className="flex-1 p-8 overflow-auto">
+      <div className="max-w-3xl mx-auto text-center">
+        <div className="w-12 h-12 bg-green-500 rounded-full mx-auto mb-6"></div>
+        <h1 className="text-4xl font-bold text-white mb-4">Need help? Let's get started..</h1>
+        <p className="text-gray-400 mb-8">
+          "Hi there! I'm your go-to guide for all things code documentation—ask me anything, and let's decode your
+          queries together!"
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <InfoCard
+            title="Saved Prompt Templates"
+            description="Use a pre-saved template prompt template for quick responses"
+          />
+          <InfoCard title="Media Type Selection" description="Select which media type you want to talk about today" />
+          <InfoCard title="Multilingual Support" description="Choose which language to use for your chat" />
+        </div>
+
+        <MediaTabs />
+
+        <div className="relative">
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+          <Input
+            type="text"
+            placeholder="Message Query&Code ...."
+            className="w-full pl-9 pr-4 py-2 bg-gray-800 border border-gray-700 text-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-green-500"
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function InfoCard({ title, description }: { title: string; description: string }) {
+  return (
+    <div className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg">
+      <h3 className="font-medium text-white mb-2">{title}</h3>
+      <p className="text-sm text-gray-400">{description}</p>
+    </div>
+  )
+}
+
+function MediaTabs() {
+  const tabs = ["All", "Text", "Image", "Video", "Music", "Analytics"]
+  return (
+    <div className="border-b border-gray-800 mb-4">
+      <div className="flex gap-4">
+        {tabs.map((tab, index) => (
+          <Button
+            key={tab}
+            variant="ghost"
+            className={`px-4 py-2 ${
+              index === 0 ? "text-green-500 border-b-2 border-green-500" : "text-gray-400 hover:text-gray-300"
+            }`}
+          >
+            {tab}
+          </Button>
+        ))}
+      </div>
+    </div>
+  )
+}
+

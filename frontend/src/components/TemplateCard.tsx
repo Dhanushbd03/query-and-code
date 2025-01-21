@@ -12,7 +12,7 @@ export function TemplateCard({
   description,
 }: TemplateCardProps) {
   return (
-    <Link to="#" className="group">
+    <Link to="#" className="group hover:scale-95 transition duration-300">
       {" "}
       <div className="bg-mainbg border rounded-lg p-6 flex flex-col gap-4">
         <div className="flex items-center justify-between">
