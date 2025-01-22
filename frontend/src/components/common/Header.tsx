@@ -10,7 +10,7 @@ export function Header() {
         <Button
           variant="secondary"
           size="sm"
-          className="flex items-center gap-2"
+          className="flex items-center gap-2 bg-ctp-base text-ctp-text hover:bg-ctp-base/90 hover:scale-95 hover:shadow-2xl border border-ctp-flamingo"
           onClick={openAuthDialog}
         >
           <LogIn className="w-4 h-4" />

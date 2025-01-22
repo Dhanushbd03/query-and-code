@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,49 +10,48 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { X } from "lucide-react";
-import logo from "@/assets/logo.png";
 import useDialogStore from "@/stores/ui/useAuthDialog";
 
-export default function SignUpForm() {
-  const { isAuthOpen, closeAuthDialog } = useDialogStore();
+type Props = {
+  setIsSignup: (value: boolean) => void;
+};
+export default function SignUpForm(Props: Props) {
+  const {  closeAuthDialog } = useDialogStore();
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
-  return isAuthOpen ? (
-    <div className="flex items-center justify-center bg-black/75 p-4 absolute top-0 left-0 w-full h-full filter">
-      <div className="rounded-lg border p-1 bg-mainbg">
-        <img src={logo} alt="" className="h-full object-contain invert" />
-      </div>
-      <Card className="w-full max-w-md z-50 bg-mainbg">
+  return <Card className="w-full max-w-md z-50 bg-ctp-surface0 border-ctp-flamingo ">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CardTitle className="text-2xl text-white">Create an account</CardTitle>
+              <CardTitle className="text-2xl text-ctp-text">Create an account</CardTitle>
             </div>
-            <Button variant="ghost" size="icon" className="rounded-full" onClick={closeAuthDialog}>
-              <X className="h-4 w-4" />
+            <Button variant="ghost" size="icon" className="rounded-full hover:bg-ctp-base text-ctp-text hover:text-ctp-text" onClick={closeAuthDialog}>
+              <X className="h-4 w-4 " />
             </Button>
           </div>
-          <CardDescription className="text-white">
+          <CardDescription className="text-ctp-subtext1">
             Already have an account?{" "}
-            <a href="#" className="text-primary hover:underline">
-              Log in
-            </a>
+            <Button className="text-primary hover:underline hover:bg-transparent hover:text-ctp-text" variant={"ghost"} onClick={() => {
+                Props.setIsSignup(false);
+            }}>
+              Login
+            </Button>
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSignUp} className="space-y-4">
+          <form onSubmit={handleSignUp} className="space-y-4 text-ctp-peach">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-white">Name*</Label>
+              <Label htmlFor="name" >Name*</Label>
               <Input id="name" placeholder="Enter your name" required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-white">Email*</Label>
+              <Label htmlFor="email" >Email*</Label>
               <Input id="email" placeholder="Enter your email" required />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-white">Password*</Label>
+              <Label htmlFor="password">Password*</Label>
               <Input
                 id="password"
                 type="password"
@@ -77,16 +75,15 @@ export default function SignUpForm() {
               </label>
             </div>
             <div className="flex gap-4">
-              <Button variant="outline" className="w-full" type="button">
+              <Button variant="outline" className="w-full bg-ctp-surface2 text-ctp-text" type="button">
                 Cancel
               </Button>
-              <Button className="w-full" type="submit">
+              <Button className="w-full bg-ctp-base text-ctp-text" type="submit">
                 Sign up
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
-    </div>
-  ) : null;
+
 }

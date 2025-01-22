@@ -1,30 +1,18 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Bookmark, ChevronDown, FolderClosed, Plus, Search } from "lucide-react"
+import { Bookmark, FolderClosed, Plus, Search } from "lucide-react"
 
 export function Sidebar() {
   return (
-    <div className="w-80 border-r border-gray-800 flex flex-col">
-      <div className="p-4 border-b border-gray-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-white rounded-full">img
-            </div>
-            <span className="text-white font-medium">My Chats</span>
-          </div>
-          <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-300">
-            <ChevronDown className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+    <div className="w-80 border-r border-gray-100 flex flex-col h-full">
 
       <div className="p-4">
         <div className="relative">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400 bg-gray-100" />
           <Input
             type="text"
             placeholder="Search"
-            className="w-full pl-9 pr-4 py-2 bg-gray-800 border-0 text-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-green-500"
+            className="w-full pl-9 pr-4 py-2 bg-gray-100 border-0 text-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-green-500"
           />
         </div>
       </div>
@@ -39,7 +27,7 @@ export function Sidebar() {
       </div>
 
       <div className="p-4">
-        <Button className="w-full bg-green-500 hover:bg-green-600 text-black">
+        <Button className="w-full bg-gray-100 hover:bg-gray-100/80 text-black">
           <Plus className="mr-2 h-4 w-4" /> New chat
         </Button>
       </div>
@@ -68,7 +56,7 @@ function ChatFolders() {
   return (
     <>
       {folders.map((folder) => (
-        <Button key={folder} variant="ghost" className="w-full justify-start text-gray-300 hover:bg-gray-800 mb-1">
+        <Button key={folder} variant="ghost" className="w-full justify-start text-gray-300 hover:bg-gray-100 mb-1">
           <FolderClosed className="mr-2 h-4 w-4" />
           {folder}
         </Button>
@@ -91,12 +79,12 @@ function ChatArchive() {
         <Button
           key={chat}
           variant="ghost"
-          className="w-full justify-start text-left px-3 py-2 text-gray-300 hover:bg-gray-800 mb-1"
+          className="w-full justify-start text-left px-3 py-2 text-gray-300 hover:bg-gray-100 mb-1"
         >
           {chat}
         </Button>
       ))}
     </>
-  )
+  ) 
 }
 

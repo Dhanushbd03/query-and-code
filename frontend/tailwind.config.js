@@ -10,9 +10,15 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       backgroundImage: {
-        mainbg:
-        "linear-gradient(to right, #141e30, #243b55)   "   },
+        mainbg: "linear-gradient(to right, #141e30, #243b55)",
+      },
+      colors: {
+        Text: "#c6d0f5",
+      },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),  require("@catppuccin/tailwindcss")({
+    prefix:"ctp",
+    defaultFlavour:"macchiato"
+  })]
 };

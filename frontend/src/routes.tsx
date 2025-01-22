@@ -1,14 +1,16 @@
-import App from './App';
-import Home from '@/app/Home';
+import { RouteObject } from "react-router-dom";
+import Home from "./pages/Home";
+import Chat from "./pages/Chat";
 
-const routes = [
+const routes: RouteObject[] = [
   {
-    path: '/',
-    element: <App/>,
-    children: [
-      { index: true, element: <Home /> },
-    ],
+    path: "/",
+    element: <Home />,
   },
+  {
+    path: "/chat",
+    element: <Chat />,
+  }
 ];
 
 export default routes;

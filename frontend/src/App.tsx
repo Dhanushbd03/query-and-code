@@ -1,15 +1,10 @@
-import { Routes, Route } from 'react-router-dom';
-import Home from '@/app/Home';
-import SignUp from './components/Signup';
-const App = () => {
-  return (
-      <main>
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-        <SignUp />
-      </main>
-  );
+import React from "react";
+import { useRoutes } from "react-router-dom";
+import routes from "./routes";
+
+const App: React.FC = () => {
+  const element = useRoutes(routes);
+  return <>{element}</>;
 };
 
 export default App;
