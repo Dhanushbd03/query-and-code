@@ -22,16 +22,16 @@ const sidebarItems = [
 
 export function Sidebar() {
   return (
-    <div className="bg-transparent flex flex-col items-center py-4 gap-4 w-28 border-r justify-center">
-      <div className="flex flex-col gap-4 rounded-full border p-5"> 
+    <div className="bg-transparent flex flex-col items-center py-4 gap-4 w-28 border-r justify-center border-ctp-flamingo">
+      <div className="flex flex-col gap-4 rounded-full border border-ctp-flamingo p-5"> 
         {" "}
         {sidebarItems.map((item, index) => (
           <button
             key={index}
             className={`p-2 rounded-lg ${
               item.active
-                ? "bg-slate-800 text-white"
-                : "text-slate-500 hover:text-slate-400"
+                ? "bg-slate-800 text-ctp-text"
+                : "text-slate-500 hover:text-ctp-text"
             }`}
           >
             <item.icon className="w-5 h-5" />

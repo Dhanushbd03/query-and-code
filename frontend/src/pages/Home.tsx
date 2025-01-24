@@ -29,7 +29,7 @@ const templates = [
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-tr to-ctp-crust from-ctp-crust text-ctp-text flex">
+    <div className="min-h-screen bg-gradient-to-r from-ctp-crust  via-ctp-base to-ctp-crust/95 text-ctp-text flex">
       <div className="flex-1 flex flex-col">
         <Header />
         <main className="flex flex-1 gap-5 ">

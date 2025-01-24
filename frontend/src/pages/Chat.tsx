@@ -4,7 +4,7 @@ import { Header } from "@/components/common/Header";
 
 export default function Home() {
   return (
-    <div className="flex h-screen bg-mainbg flex-col">
+    <div className="flex h-screen bg-gradient-to-r from-ctp-crust via-ctp-base to-ctp-crust/95 flex-col">
       <Header />
       <div className="flex flex-1">
         {" "}
