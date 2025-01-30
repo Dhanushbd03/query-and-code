@@ -8,7 +8,7 @@ const routes: RouteObject[] = [
     element: <Home />,
   },
   {
-    path: "/chat",
+    path: "/chat/:lang",
     element: <Chat />,
   }
 ];

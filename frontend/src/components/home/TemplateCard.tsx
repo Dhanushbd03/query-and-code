@@ -12,7 +12,7 @@ export function TemplateCard({
   description,
 }: TemplateCardProps) {
   return (
-    <Link to="#" className="group hover:scale-95 transition duration-300 h-full"> 
+    <Link to={`/chat/${title.toLowerCase()}`} className="group hover:scale-95 transition duration-300 h-full"> 
       {" "}
       <div className="bg-ctp-base border border-ctp-flamingo rounded-lg p-6 flex flex-col gap-4 h-full">
         <div className="flex items-center justify-between">
