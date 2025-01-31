@@ -3,8 +3,9 @@ import Conversation from "./Conversation";
 import { Search, SendHorizontal  } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import useChat from "@/stores/ui/useChat";
 function Content() {
-  const [is_intro] = useState<boolean>(true);
+  const { is_intro } = useChat();
   const [message, set_message] = useState<string>("");
   const handleMessageSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

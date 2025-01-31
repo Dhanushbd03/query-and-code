@@ -6,17 +6,13 @@ interface DialogStore {
   closeAuthDialog: () => void;
 }
 
-const useDialogStore = create<DialogStore>((set, get) => ({
+const useDialogStore = create<DialogStore>((set) => ({
   isAuthOpen: false,
   openAuthDialog: () => {
     set({ isAuthOpen: true });
-    console.log("Auth dialog opened");
-    console.log("isAuthOpen:", get().isAuthOpen);
   },
   closeAuthDialog: () => {
     set({ isAuthOpen: false });
-    console.log("Auth dialog closed");
-    console.log("isAuthOpen:", get().isAuthOpen);
   },
 }));
 

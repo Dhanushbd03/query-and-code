@@ -7,7 +7,7 @@ const Intro = () => {
   return (
     <div className="max-w-3xl mx-auto text-center relative ">
         <div className="size-24 bg-ctp-text rounded-full mx-auto mb-6 flex items-center justify-center">
-          <Bot className="size-16" />
+          <Bot className="size-16 text-black" />
         </div>
         <h1 className="text-4xl font-bold text-ctp-text mb-4">
            Need help with {lang ? lang.charAt(0).toUpperCase() + lang.slice(1) : ""}? Let's get started..
