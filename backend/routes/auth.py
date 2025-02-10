@@ -1,39 +1,34 @@
 
 from flask import Blueprint, request, jsonify
-from models import User
+from services import register_user , login_user , logout_user
 
 
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['POST'])
 def register():
-    """User Registration"""
+    """User Registration (Uses Auth Service)"""
     data = request.json
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
 
-    if User.query.filter_by(email=email).first():
-        return jsonify({"message": "Email already registered"}), 400
+    return register_user(username, email, password)
 
-    user = User(username=username, email=email)
-    user.set_password(password)
-    db.session.add(user)
-    db.session.commit()
-
-    return jsonify({"message": "User registered successfully"}), 201
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    """User Login"""
+    """User Login (Calls Auth Service)"""
     data = request.json
-    email = data.get('email')
+    identifier = data.get('identifier')
     password = data.get('password')
 
-    user = User.query.filter_by(email=email).first()
+    return login_user(identifier, password)
 
-    if user and user.check_password(password):
-        token = generate_token(user.id)
-        return jsonify({"token": token}), 200
 
-    return jsonify({"message": "Invalid credentials"}), 401
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    """User Logout"""
+    return logout_user()
+
+    

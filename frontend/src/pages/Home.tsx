@@ -4,18 +4,27 @@ import { TemplateCard } from "@/components/home/TemplateCard";
 import { FaReact } from "react-icons/fa6";
 import { RiSvelteFill } from "react-icons/ri";
 import { FaAngular } from "react-icons/fa";
+import useSidebar from "@/stores/ui/useSidebar";
 
 const templates = [
   { icon: FaReact, title: "React", description: "Create a blank chatbot." },
-  { icon: RiSvelteFill, title: "Svelte", description: "Crawl your website's content." },
-  { icon: FaAngular, title: "Angular", description: "Crawl your website's content." },
+  {
+    icon: RiSvelteFill,
+    title: "Svelte",
+    description: "Crawl your website's content.",
+  },
+  {
+    icon: FaAngular,
+    title: "Angular",
+    description: "Crawl your website's content.",
+  },
 ];
 
 export default function Home() {
+  const { is_sidebar_open } = useSidebar();
   return (
     <>
-    {is_sidebar_open && <Sidebar />}
-      <Sidebar />
+      {is_sidebar_open && <Sidebar />}
       <div className="flex-1 p-6">
         <h1 className="text-2xl font-semibold mb-2">Choose a framework</h1>
         <p className="text-ctp-subtext1">

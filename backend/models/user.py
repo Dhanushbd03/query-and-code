@@ -1,9 +1,6 @@
 from datetime import datetime
-from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
-
-db = SQLAlchemy()
-
+from models import db
 class User(db.Model):
     __tablename__ = 'users'
     
@@ -20,3 +17,10 @@ class User(db.Model):
     def check_password(self, password):
         """Check if entered password matches hashed password"""
         return check_password_hash(self.password_hash, password)
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email
+        }

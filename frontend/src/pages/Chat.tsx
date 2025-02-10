@@ -1,10 +1,10 @@
 // src/pages/Chat.tsx
 import { Sidebar } from "@/components/chat/Sidebar";
 import Content from "@/components/chat/Content";
-import useSidebarStore from "@/stores/ui/useSidebar";
+import useSidebar from "@/stores/ui/useSidebar";
 
 export default function Chat() {
-  const { is_sidebar_open } = useSidebarStore();
+  const { is_sidebar_open ,  } = useSidebar();
 
   return (
     <>

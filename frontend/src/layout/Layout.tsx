@@ -1,6 +1,7 @@
 import { Header } from "@/components/common/Header";
 import Auth from "@/components/home/Auth";
 import { Outlet } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function Layout() {
   return (
@@ -10,6 +11,7 @@ export default function Layout() {
         <Outlet />
       </main>
       <Auth />
+      <Toaster />
     </div>
   );
 }
