@@ -19,6 +19,6 @@ def verify_token(token):
         payload = jwt.decode(token,  os.getenv("SECRET_KEY"), algorithms=["HS256"])
         return payload["user_id"]
     except jwt.ExpiredSignatureError:
-        return create_response(False, message="Token has expired"), 401
+        return None
     except jwt.InvalidTokenError:
-        return create_response(False, message="Invalid token"), 401
+        return None

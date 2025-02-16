@@ -10,33 +10,31 @@ interface User {
 interface AuthStore {
   user: User | null;
   isAuthenticated: boolean;
-  signUp: (
-    username: string,
-    email: string,
-    password: string
-  ) => Promise<boolean>;
+  loading: boolean;
+  signUp: (name: string, email: string, password: string) => Promise<boolean>;
   signIn: (identifier: string, password: string) => Promise<boolean>; // Username or email
   getUser: () => void;
   logout: () => void;
 }
+
 const authApi = createApi("api/auth");
 const userApi = createApi("api/user");
 
 const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   isAuthenticated: false,
+  loading: true, // Initially loading is true
 
   signUp: async (username, email, password) => {
     try {
       const usernameValue = username.trim().toLowerCase();
-      console.log(usernameValue);
       const response = await authApi.post("/register", {
-        username: usernameValue,
+        name: usernameValue,
         email,
         password,
       });
       toast({
-        title: "Account created",
+        title: "Account created successfully 🎉 , Please Login with your credentials and boost your productivity",
         description: response.data.message,
         variant: "success",
       });
@@ -75,6 +73,7 @@ const useAuthStore = create<AuthStore>((set) => ({
     try {
       await authApi.post("/logout");
       set({ user: null, isAuthenticated: false });
+      window.location.href = "/";
       toast({
         title: "Logout successful",
         description: "You have been logged out",
@@ -88,12 +87,14 @@ const useAuthStore = create<AuthStore>((set) => ({
       });
     }
   },
+
   getUser: async () => {
+    set({ loading: true }); // Start loading
     try {
       const response = await userApi.get("/");
-      set({ user: response.data.user, isAuthenticated: true });
+      set({ user: response.data.user, isAuthenticated: true, loading: false });
     } catch (error: any) {
-      set({ user: null, isAuthenticated: false });
+      set({ user: null, isAuthenticated: false, loading: false });
     }
   },
 }));

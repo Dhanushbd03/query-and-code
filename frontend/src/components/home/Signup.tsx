@@ -114,6 +114,7 @@ export default function SignUpForm(Props: Props) {
               variant="outline"
               className="w-full bg-ctp-surface2 text-ctp-text"
               type="button"
+              onClick={closeAuthDialog}
             >
               Cancel
             </Button>

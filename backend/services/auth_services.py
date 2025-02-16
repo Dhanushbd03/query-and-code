@@ -1,19 +1,20 @@
 from models import User , db
 from utils import generate_token , create_response , verify_token
-from flask import jsonify, make_response
 from werkzeug.security import generate_password_hash , check_password_hash
+import random
 import traceback
 
-def register_user(username, email, password):
+def register_user(name, email, password):
     """Register a new user and set JWT token in an HTTP-only cookie."""
     try:
+        username = name + str(random.randint(1000, 9999))
         # Check if email is already registered
         if User.query.filter_by(email=email).first():
             return create_response(False, message="Email already registered", status=400)
 
         # Hash password and create user
         hashed_password = generate_password_hash(password)
-        user = User(username=username, email=email, password_hash=hashed_password)
+        user = User(name=name,username=username , email=email, password_hash=hashed_password)
 
         # Save to DB
         db.session.add(user)
@@ -37,9 +38,6 @@ def register_user(username, email, password):
     except Exception as e:
         traceback.print_exc()  # ✅ Print full error traceback for debugging
         return create_response(False, message="Internal Server Error", status=500)
-
-
-
 
 def login_user(identifier, password):
     """Handles user login logic."""

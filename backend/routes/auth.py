@@ -5,15 +5,16 @@ from services import register_user , login_user , logout_user
 
 auth_bp = Blueprint('auth', __name__)
 
+
 @auth_bp.route('/register', methods=['POST'])
 def register():
     """User Registration (Uses Auth Service)"""
     data = request.json
-    username = data.get('username')
+    name = data.get('name')
     email = data.get('email')
     password = data.get('password')
 
-    return register_user(username, email, password)
+    return register_user(name, email, password)
 
 
 @auth_bp.route('/login', methods=['POST'])

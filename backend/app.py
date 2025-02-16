@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from models import db
 from routes import main_bp
 from flask_cors import CORS
+from flask_migrate import Migrate
 import os
 
 # Load environment variables from .env
@@ -23,17 +24,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
 # Function to create tables and test DB connection
-def setup_database():
-    try:
-        with app.app_context():
-            db.create_all()  # ✅ Correct way to create tables
-            print("✅ Tables created successfully!")
-            print("✅ PostgreSQL is connected!")
-    except Exception as e:
-        print(f"❌ Database setup failed: {str(e)}")
-        exit(1)
+migrate = Migrate(app, db)
 
-setup_database()
 
 # Register blueprints
 try:

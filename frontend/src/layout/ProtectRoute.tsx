@@ -8,15 +8,21 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { isAuthenticated, loading } = useAuthStore();
   const location = useLocation();
   const { toast } = useToast();
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading state instead of redirecting too early
+  }
+
   if (!isAuthenticated) {
     toast({
       title: "Error",
-      description: "you need to be logged in to access this page",
+      description: "You need to be logged in to access this page",
       variant: "destructive",
-    })
+    });
+
     return <Navigate to="/" state={{ from: location }} replace />;
   }
 

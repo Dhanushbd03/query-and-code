@@ -12,8 +12,8 @@ def token_required(f):
             return create_response(False, message="Token is missing"), 401
 
         try:
-            decoded_token = verify_token(token)
-            user = User.query.get(decoded_token["user_id"])
+            user_id = verify_token(token)
+            user = User.query.get(user_id)
             if not user:
                 return create_response(False, message="User not found"), 404
         except Exception as e:

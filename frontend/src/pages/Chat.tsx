@@ -4,7 +4,7 @@ import Content from "@/components/chat/Content";
 import useSidebar from "@/stores/ui/useSidebar";
 
 export default function Chat() {
-  const { is_sidebar_open ,  } = useSidebar();
+  const { is_sidebar_open  } = useSidebar();
 
   return (
     <>
