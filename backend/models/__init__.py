@@ -1,6 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
-
 db = SQLAlchemy() 
 
+
+from .base import BaseModel
 from .user import User
-from .chat import Conversation, Message
+from .message import Message
+from .conversation import Conversation
+from .language import Language

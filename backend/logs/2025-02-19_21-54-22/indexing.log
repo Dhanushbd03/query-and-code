@@ -1,0 +1,8 @@
+2025-02-19 21:54:22,526 - INFO - 🚀 Starting indexing for folder: react
+2025-02-19 21:54:22,527 - INFO - 🔄 Loading Markdown files...
+2025-02-19 21:54:27,346 - INFO - 127.0.0.1 - - [19/Feb/2025 21:54:27] "GET /api/in+dex/status HTTP/1.1" 200 -
+2025-02-19 21:54:56,218 - INFO - ✅ Total Markdown Files Found: 45
+2025-02-19 21:54:56,404 - INFO - ✅ Total Chunks After Splitting: 3383
+2025-02-19 21:54:56,405 - INFO - ✅ Embedding model loaded.
+2025-02-19 21:54:56,405 - INFO - 🚀 Indexing documents into Qdrant...2025-02-19 22:01:14,132 - INFO - ✅ Indexing completed successfully!
+2025-02-19 22:01:14,133 - INFO - ✅ Indexing process finished.

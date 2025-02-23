@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Bookmark, FolderClosed, Plus, Search } from "lucide-react";
+import { FolderClosed, Plus, Search } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Conversation, getConversations } from "@/api/api_routes";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function Sidebar() {
   return (
@@ -17,8 +20,8 @@ export function Sidebar() {
       </div>
 
       <div className="p-4">
-        <FolderSection title="Translation Option" />
-        <ChatFolders />
+        {/* <FolderSection title="Translation Option" /> */}
+        <ConversationsFolders />
       </div>
 
       <div className="p-4 mt-auto">
@@ -30,47 +33,53 @@ export function Sidebar() {
   );
 }
 
-function FolderSection({ title }: { title: string }) {
-  return (
-    <div className="flex items-center justify-between mb-2">
-      <span className="text-sm text-ctp-text">{title}</span>
-      <div className="flex gap-1">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-ctp-text hover:text-ctp-flamingo hover:bg-ctp-base"
-        >
-          <Bookmark className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="text-ctp-text hover:text-ctp-flamingo hover:bg-ctp-base"
-        >
-          <Plus className="h-4 w-4" />
-        </Button>
-      </div>
-    </div>
-  );
-}
+// function FolderSection({ title }: { title: string }) {
+//   return (
+//     <div className="flex items-center justify-between mb-2">
+//       <span className="text-sm text-ctp-text">{title}</span>
+//       <div className="flex gap-1">
+//         <Button
+//           variant="ghost"
+//           size="icon"
+//           className="text-ctp-text hover:text-ctp-flamingo hover:bg-ctp-base"
+//         >
+//           <Bookmark className="h-4 w-4" />
+//         </Button>
+//         <Button
+//           variant="ghost"
+//           size="icon"
+//           className="text-ctp-text hover:text-ctp-flamingo hover:bg-ctp-base"
+//         >
+//           <Plus className="h-4 w-4" />
+//         </Button>
+//       </div>
+//     </div>
+//   );
+// }
 
-function ChatFolders() {
-  const folders = [
-    "Work chats",
-    "Life chats",
-    "Projects chats",
-    "Clients chats",
-  ];
+function ConversationsFolders() {
+  const [conversations, set_conversations] = useState<Conversation[]>([]);
+  const { lang } = useParams<{ lang: string }>();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const fetchConversations = async () => {
+      const conversations = await getConversations();
+      set_conversations(conversations);
+    };
+    fetchConversations();
+  }, []);
+
   return (
     <>
-      {folders.map((folder) => (
+      {conversations?.map((item) => (
         <Button
-          key={folder}
+          key={item.id}
           variant="ghost"
           className="w-full justify-start text-ctp-text hover:bg-ctp-base hover:text-ctp-flamingo mb-1"
+          onClick={() => navigate(`/${lang}/${item.id}`)}
         >
           <FolderClosed className="mr-2 h-4 w-4" />
-          {folder}
+          {item.title}
         </Button>
       ))}
     </>

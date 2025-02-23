@@ -37,7 +37,7 @@ export default function SignInForm(props: Props) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CardTitle className="text-2xl text-ctp-text">
-              Create an account
+              Signin to your account
             </CardTitle>
           </div>
           <Button

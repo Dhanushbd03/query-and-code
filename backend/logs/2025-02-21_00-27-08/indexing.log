@@ -1,0 +1,12 @@
+2025-02-21 00:27:08,134 - INFO - 🚀 Starting indexing for folder: react
+2025-02-21 00:27:08,135 - INFO - 🔄 Loading Markdown files...
+2025-02-21 00:27:45,097 - INFO - 127.0.0.1 - - [21/Feb/2025 00:27:45] "[33mGET /api/index HTTP/1.1[0m" 404 -
+2025-02-21 00:27:45,441 - INFO - ✅ Total Markdown Files Found: 45
+2025-02-21 00:27:45,601 - INFO - ✅ Total Chunks After Splitting: 3383
+2025-02-21 00:27:45,602 - INFO - ✅ Embedding model loaded.
+2025-02-21 00:27:45,602 - INFO - 🚀 Indexing documents into Qdrant...
+2025-02-21 00:28:02,421 - INFO - 127.0.0.1 - - [21/Feb/2025 00:28:02] "[31m[1mGET /api/chat/start HTTP/1.1[0m" 405 -
+2025-02-21 00:28:23,324 - INFO - 127.0.0.1 - - [21/Feb/2025 00:28:23] "[35m[1mPOST /api/chat/start HTTP/1.1[0m" 500 -
+2025-02-21 00:29:33,949 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/chat.py', reloading
+2025-02-21 00:29:33,962 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/chat.py', reloading
+2025-02-21 00:29:33,977 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/chat.py', reloading

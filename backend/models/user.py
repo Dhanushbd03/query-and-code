@@ -1,15 +1,20 @@
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db
+from sqlalchemy.sql import func
+
+
 class User(db.Model):
-    __tablename__ = 'users'
-    
+    __tablename__ = "users"
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(256), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(
+        db.DateTime, default=func.now(), server_default=func.now()  # ✅ Fix
+    )
 
     def set_password(self, password):
         """Hash and store user password"""
@@ -18,11 +23,11 @@ class User(db.Model):
     def check_password(self, password):
         """Check if entered password matches hashed password"""
         return check_password_hash(self.password_hash, password)
-    
+
     def serialize(self):
         return {
             "id": self.id,
             "name": self.name,
             "username": self.username,
-            "email": self.email
+            "email": self.email,
         }

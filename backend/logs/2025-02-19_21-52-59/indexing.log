@@ -1,0 +1,8 @@
+2025-02-19 21:52:59,375 - INFO - 🚀 Starting indexing for folder: content/react
+2025-02-19 21:52:59,374 - INFO - 127.0.0.1 - - [19/Feb/2025 21:52:59] "[35m[1mPOST /api/index/ HTTP/1.1[0m" 202 -
+2025-02-19 21:52:59,376 - ERROR - ❌ Folder not found: content/content/react
+2025-02-19 21:52:59,377 - INFO - ✅ Indexing process finished.
+2025-02-19 21:53:06,989 - INFO - 127.0.0.1 - - [19/Feb/2025 21:53:06] "GET /api/index/status HTTP/1.1" 200 -
+2025-02-19 21:54:10,743 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/indexing_route.py', reloading
+2025-02-19 21:54:10,746 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/indexing_route.py', reloading
+2025-02-19 21:54:10,749 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/indexing_route.py', reloading

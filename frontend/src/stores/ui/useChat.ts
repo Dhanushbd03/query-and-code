@@ -6,7 +6,7 @@ interface ChatStore {
 }
 
 const useChat = create<ChatStore>((set) => ({
-  is_intro: true,
+  is_intro: false,
   set_is_intro: (isIntro: boolean) => {
     set({ is_intro: isIntro });
   },

@@ -33,6 +33,8 @@ export default function SignUpForm(Props: Props) {
     }
   };
 
+  
+
   return (
     <Card className="w-full max-w-md z-50 bg-ctp-surface0 border-ctp-flamingo ">
       <CardHeader className="space-y-1">
@@ -52,7 +54,7 @@ export default function SignUpForm(Props: Props) {
           </Button>
         </div>
         <CardDescription className="text-ctp-subtext1">
-          Already have an account?{" "}
+          Already have an account?
           <Button
             className="text-primary hover:underline hover:bg-transparent hover:text-ctp-text"
             variant={"ghost"}
@@ -103,7 +105,7 @@ export default function SignUpForm(Props: Props) {
               htmlFor="terms"
               className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              I agree with{" "}
+              I agree with
               <a href="#" className="text-primary hover:underline">
                 terms and conditions
               </a>
