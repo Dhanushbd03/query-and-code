@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from models import db, Conversation, Message, Language
 from utils import create_response
-from services import ChatbotService, getMessages , getConversations
+from services import ChatbotService, getMessages, getConversations
 from middleware import token_required  # Move token logic to a separate file
 
 chat_bp = Blueprint("chat", __name__)
@@ -22,7 +22,6 @@ def start_conversation(user):
             True, conversation.serialize(), "Conversation started successfully", 201
         )
     except Exception as e:
-        print(e)
         return create_response(False, message="Failed to start conversation"), 500
 
 
@@ -70,13 +69,14 @@ def send_message(user):
         db.session.add(bot_message)
         db.session.commit()
 
-        return create_response(True, bot_response, "Message received successfully", 200)
+        return create_response(True, bot_response, "Message received successfully", 201)
     except Exception as e:
-        print(e)
-        return create_response(False, "", "Failed to process message", 500)
+        return create_response(
+            False, None, "Something went wrong , please reload and check ", 500
+        )
 
 
-@chat_bp.route("/messages/<int:conversation_id>", methods=["GET"])
+@chat_bp.route("/messages/<conversation_id>", methods=["GET"])
 @token_required
 def GetMessages(user, conversation_id):
     """Retrieve conversation history for a given conversation ID."""

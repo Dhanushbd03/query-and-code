@@ -1,7 +1,7 @@
 import createApi from "./axios";
 
 const chat_api = createApi("api/chat");
-
+const language_api = createApi("api/languages");
 export interface Message {
   id: number;
   conversation_id: number;
@@ -18,12 +18,52 @@ export interface Conversation {
   created_at: string;
 }
 
-export const getMessages = async (id: number) => {
-  const response = await chat_api.get(`/messages/${id}`);
-  return response?.data?.data ? (response.data.data as Message[]) : [];
+export interface Language {
+  id: number;
+  name: string;
+  description: string;
+  icon: string;
+}
+
+export const getMessages = async (conv_id: string) => {
+  const response = await chat_api.get(`/messages/${conv_id}`);
+  return response?.data;
 };
 
-export const getConversations = async () => {
-  const response = await chat_api.get("/conversations");
-  return response?.data?.data ? (response.data.data as Conversation[]) : [];
+export const getConversations = async (lang_id: string) => {
+  const response = await chat_api.get("/conversations", {
+    params: {
+      lang_id,
+    },
+  });
+  return response?.data;
+};
+
+export const startChat = async (
+  conversation_id: string,
+  language_id: string
+) => {
+  const response = await chat_api.post("/start", {
+    conversation_id,
+    language_id,
+  });
+  return response?.data;
+};
+
+export const getLanguages = async () => {
+  const response = await language_api.get("/");
+  return response?.data;
+};
+
+export const sendMessage = async (
+  language_id: string,
+  conversation_id: string,
+  message: string
+) => {
+  const response = await chat_api.post("/send", {
+    language_id,
+    conversation_id,
+    message,
+  });
+  return response?.data;
 };

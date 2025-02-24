@@ -1,23 +1,23 @@
-# utils/token.py
-
 import jwt
 import datetime
 import os
-from utils import create_response
-def generate_token(user_id):
-    """Generate JWT token for authentication"""
-    print(user_id)
+import uuid  # Ensure UUID module is imported
+
+def generate_token(user_id):    
+    user_id_str = str(user_id)
     payload = {
-        "user_id": user_id,
-        "exp": datetime.datetime.now() + datetime.timedelta(hours=24)
+        "user_id": user_id_str,
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24)
     }
-    return jwt.encode(payload, os.getenv("SECRET_KEY"), algorithm="HS256")
+    token = jwt.encode(payload, os.getenv("SECRET_KEY"), algorithm="HS256")
+    print(f"Generated Token: {token}")  # Debugging
+    return token
 
 def verify_token(token):
-    """Verify JWT token and return user ID"""
     try:
-        payload = jwt.decode(token,  os.getenv("SECRET_KEY"), algorithms=["HS256"])
-        return payload["user_id"]
+        payload = jwt.decode(token, os.getenv("SECRET_KEY"), algorithms=["HS256"])
+        user_id = uuid.UUID(payload["user_id"])  
+        return user_id
     except jwt.ExpiredSignatureError:
         return None
     except jwt.InvalidTokenError:

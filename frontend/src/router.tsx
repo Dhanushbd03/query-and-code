@@ -12,7 +12,7 @@ const routes: RouteObject[] = [
     children: [
       { index: true, element: <Home /> },
       {
-        path: "/:lang",
+        path: "/:langId",
         element: (
           <ProtectedRoute>
             <Chat />
@@ -20,7 +20,7 @@ const routes: RouteObject[] = [
         ),
       },
       {
-        path: "/:lang/:id",
+        path: "/:langId/:convId",
         element: (
           <ProtectedRoute>
             <Chat />

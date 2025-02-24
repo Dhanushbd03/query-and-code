@@ -4,7 +4,7 @@ from models import Conversation, Message
 def getMessages(conversation_id, user):
     """Fetch a conversation and its message history for a user."""
     conversation = Conversation.query.filter_by(
-        id=int(conversation_id), user_id=str(user.id)
+        id=conversation_id, user_id=user.id
     ).first()
 
     if not conversation:
