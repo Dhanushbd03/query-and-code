@@ -1,47 +1,44 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FolderClosed, Plus, Search } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Conversation, getConversations, startChat } from "@/api/api_routes";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
 import Spinner from "@/components/ui/spinner";
+import useChat from "@/stores/logic/useChat";
 
-export function Sidebar() {
-  const { langId, convId } = useParams<{ langId: string; convId: string }>();
-  const [conversations, set_conversations] = useState<Conversation[]>([]);
-  const [loading, set_loading] = useState(false);
+interface Props {
+  className?: string;
+}
+export function Sidebar({ className }: Props) {
+  const { langId } = useParams<{ langId: string; convId: string }>();
+  const { loading, addNewChat, conversations, getConversations } = useChat();
   const navigate = useNavigate();
+
   useEffect(() => {
-    const fetchConversations = async () => {
-      const response = await getConversations(langId as string);
-      set_conversations(response.data as Conversation[]);
-    };
-    fetchConversations();
-  }, [loading]);
+    getConversations(langId as string);
+  }, [langId]);
 
   const handleNewChat = async () => {
-    set_loading(true);
-    const response = await startChat(convId as string, langId as string);
-    if (response.success) {
-      navigate(`/${langId}/${response.data.id}`);
+    const response = await addNewChat(langId as string);
+    if (response?.success) {
+      navigate(`/${langId}/${response?.data.id}`);
     } else {
       toast({
-        title: "ERROR",
-        description: response.message,
-        variant: "success",
+        title: "Error",
+        description: "Failed to create new chat",
+        variant: "destructive",
       });
     }
-    set_loading(false);
   };
 
   if (loading)
-    return (
-      <Spinner size={"80"} color={"white"} className="h-screen w-screen" />
-    );
+    return <Spinner size={"80"} color={"white"} className="h-full w-full" />;
 
   return (
-    <div className="w-80 border-r border-ctp-flamingo flex flex-col h-full">
+    <div
+      className={` border-r border-ctp-flamingo flex flex-col h-full ${className} overflow-hidden absolute sm:static bg-ctp-gradient z-50`}
+    >
       <div className="p-4">
         <div className="relative">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-ctp-text bg-ctp-base" />
@@ -58,7 +55,7 @@ export function Sidebar() {
           <Button
             key={item.id}
             variant="ghost"
-            className="w-full justify-start text-ctp-text hover:bg-ctp-base hover:text-ctp-flamingo mb-1"
+            className="w-full justify-start text-ctp-text hover:bg-ctp-base hover:text-ctp-flamingo mb-1 text-ellipsis overflow-hidden"
             onClick={() => navigate(`/${langId}/${item.id}`)}
           >
             <FolderClosed className="mr-2 h-4 w-4" />

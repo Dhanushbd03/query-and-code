@@ -12,7 +12,7 @@ interface AuthStore {
   isAuthenticated: boolean;
   loading: boolean;
   signUp: (name: string, email: string, password: string) => Promise<boolean>;
-  signIn: (identifier: string, password: string) => Promise<boolean>; // Username or email
+  signIn: (identifier: string, password: string) => Promise<boolean>;
   getUser: () => void;
   logout: () => void;
 }
@@ -23,8 +23,7 @@ const userApi = createApi("api/user");
 const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   isAuthenticated: false,
-  loading: true, // Initially loading is true
-
+  loading: false,
   signUp: async (username, email, password) => {
     try {
       const usernameValue = username.trim().toLowerCase();

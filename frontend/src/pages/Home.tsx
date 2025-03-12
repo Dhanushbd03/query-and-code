@@ -2,39 +2,27 @@
 import { Sidebar } from "@/components/home/Sidebar";
 import { TemplateCard } from "@/components/home/TemplateCard";
 import useSidebar from "@/stores/ui/useSidebar";
-import { useEffect, useState } from "react";
-import { getLanguages, Language } from "@/api/api_routes";
-import { toast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 import Spinner from "@/components/ui/spinner";
+import useLanguage from "@/stores/logic/useLanguage";
 
 export default function Home() {
   const { is_sidebar_open } = useSidebar();
-  const [languages, set_languages] = useState<Language[]>([]);
-  const [loading, set_loading] = useState(true);
-
+  const { languages, l_loading, getLanguages } = useLanguage();
   useEffect(() => {
-    const fetchData = async () => {
-      set_loading(true);
-      const response = await getLanguages();
-      if (response.success) {
-        set_languages(response.data);
-      } else {
-        toast({
-          title: "Failed to fetch languages",
-          description: response.message,
-          variant: "destructive",
-        });
-      }
-      set_loading(false);
-    };
-    fetchData();
+    getLanguages();
   }, []);
 
+  if (l_loading) {
+    return <Spinner size={"80"} color={"white"} className="size-full" />;
+  }
   return (
-    <>
-      {is_sidebar_open && <Sidebar />}
-      {!loading ? (
-        <div className="flex-1 p-6">
+    <div className="flex size-full relative">
+      <Sidebar
+        className={`h-full ${is_sidebar_open ? "w-28" : "w-0"} transition-all `}
+      />
+      {languages?.length > 0 ? (
+        <div className="flex-1 p-6 h-full">
           <h1 className="text-2xl font-semibold mb-2">Choose a framework</h1>
           <p className="text-ctp-subtext1">
             Streamline your development process with AI-powered answers.
@@ -46,8 +34,12 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <Spinner size={"80"} color={"white"} className="h-screen w-screen" />
+        <div className="flex-1 p-6 h-full flex items-center justify-center">
+          <p className="text-ctp-subtext1">
+            No languages available. Please try again later.
+          </p>
+        </div>
       )}
-    </>
+    </div>
   );
 }

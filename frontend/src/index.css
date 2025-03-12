@@ -1,8 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
-    --radius: 0.5rem
+    --radius: 0.5rem;
+  }
+}
+
+@layer utilities {
+  .bg-ctp-gradient {
+    @apply bg-gradient-to-r from-ctp-crust via-ctp-base to-ctp-crust/95;
   }
 }

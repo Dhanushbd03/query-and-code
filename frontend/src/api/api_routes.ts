@@ -10,13 +10,7 @@ export interface Message {
   timestamp: string;
 }
 
-export interface Conversation {
-  id: number;
-  user_id: string;
-  language_id: number;
-  title: string;
-  created_at: string;
-}
+
 
 export interface Language {
   id: number;
@@ -24,12 +18,6 @@ export interface Language {
   description: string;
   icon: string;
 }
-
-export const getMessages = async (conv_id: string) => {
-  const response = await chat_api.get(`/messages/${conv_id}`);
-  return response?.data;
-};
-
 export const getConversations = async (lang_id: string) => {
   const response = await chat_api.get("/conversations", {
     params: {
@@ -52,18 +40,6 @@ export const startChat = async (
 
 export const getLanguages = async () => {
   const response = await language_api.get("/");
-  return response?.data;
-};
-
-export const sendMessage = async (
-  language_id: string,
-  conversation_id: string,
-  message: string
-) => {
-  const response = await chat_api.post("/send", {
-    language_id,
-    conversation_id,
-    message,
-  });
+  console.log(response);
   return response?.data;
 };
