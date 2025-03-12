@@ -11,7 +11,7 @@ def trigger_indexing():
     folder_name = data.get("folder")
 
     """API to trigger indexing process dynamically."""
-    # data = request.get_json()
+    
     if not data or "folder" not in data:
         return jsonify({"error": "Missing 'folder' in request body"}), 400
 

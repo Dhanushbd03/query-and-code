@@ -1,9 +1,10 @@
 from flask import jsonify, make_response
 
-def create_response(success, data=None, message=None, status=200):
+
+def create_response(success="false", data=None, message="Something went wrong", status=500):
     """Utility function to create a standardized API response."""
     response_data = {"success": success}
-    
+
     if data:
         response_data["data"] = data
     if message:

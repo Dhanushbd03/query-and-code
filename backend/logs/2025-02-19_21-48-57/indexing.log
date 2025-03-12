@@ -1,9 +1,0 @@
-2025-02-19 21:48:57,232 - INFO - 🚀 Starting indexing for folder: contentreact
-2025-02-19 21:48:57,233 - ERROR - ❌ Folder not found: content/contentreact
-2025-02-19 21:48:57,233 - INFO - ✅ Indexing process finished.
-2025-02-19 21:49:26,426 - INFO - 127.0.0.1 - - [19/Feb/2025 21:49:26] "[31m[1mPOST /api/index/status HTTP/1.1[0m" 405 -
-2025-02-19 21:49:30,037 - INFO - 127.0.0.1 - - [19/Feb/2025 21:49:30] "[31m[1mPOST /api/index/status HTTP/1.1[0m" 405 -
-2025-02-19 21:49:36,359 - INFO - 127.0.0.1 - - [19/Feb/2025 21:49:36] "GET /api/index/status HTTP/1.1" 200 -
-2025-02-19 21:49:48,090 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/indexing_route.py', reloading
-2025-02-19 21:49:48,094 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/indexing_route.py', reloading
-2025-02-19 21:49:48,102 - INFO -  * Detected change in '/home/dhanush/Documents/query-and-code/backend/routes/indexing_route.py', reloading

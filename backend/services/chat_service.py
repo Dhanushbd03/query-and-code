@@ -30,10 +30,12 @@ def getMessages(conversation_id, user):
     return "", history, 200
 
 
-def getConversations(user):
+def getConversations(user, language_id):
     """Fetch all conversations for a user with the first message as the title."""
     try:
-        conversations = Conversation.query.filter_by(user_id=str(user.id)).all()
+        conversations = Conversation.query.filter_by(
+            user_id=str(user.id), language_id=str(language_id)
+        ).all()
 
         response = []
         for conv in conversations:

@@ -93,11 +93,11 @@ def GetMessages(user, conversation_id):
     )
 
 
-@chat_bp.route("/conversations", methods=["GET"])
+@chat_bp.route("/<language_id>/conversations", methods=["GET"])
 @token_required
-def GetConversations(user):
+def GetConversations(user , language_id):
     """Retrieve conversation history for a given conversation ID."""
-    response, status_code = getConversations(user)
+    response, status_code = getConversations(user, language_id)
 
     if status_code != 200:
         return create_response(False, message=str(response)), status_code

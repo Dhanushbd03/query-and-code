@@ -46,45 +46,31 @@ class ChatbotService:
 
         # Define prompt template
         self.template = """
-        You are an AI assistant specialized in answering questions strictly based on the provided documentation.  
+You are an AI assistant specialized in answering questions using the provided documentation as the primary source of truth.
+You should prioritize and rely on the context given but may use your general knowledge when necessary to enhance the response.
+Ensure that your answers are detailed and well-explained.
+If the question is about a topic that is not covered in the provided documentation, you can provide insights from your general knowledge while mentioning that the answer is based on external knowledge.
+However, if the user asks something completely unrelated or outside your expertise, politely inform them that you can't answer.
 
-        **Guidelines:**  
-        - Use only the **context** to answer the question.  
-        - If the context does not contain relevant information, respond with:  
-        **"I don't have enough information in the provided context to answer this."**  
-        - Do not use external knowledge beyond the provided context.  
-        - Use the **chat history** to maintain conversation flow but prioritize the latest context.  
-        - Keep responses clear, concise, and relevant to the topic.  
+---
 
-        ---
+### Chat History:
+{history}
 
-        ### Chat History:
-        {history}
+### Context:
+{context}
 
-        ### Context:
-        {context}
+### User Query:
+{query}
 
-        ### User Query:
-        {query}
+### Answer:
+"""
 
-        ### Answer:
-        """
         self.prompt_template = PromptTemplate.from_template(template=self.template)
-
-        # Create RAG pipeline
-        set_ret = RunnableParallel(
-            {
-                "context": self.retriever,
-                "query": RunnablePassthrough(),
-                "history": RunnablePassthrough(),
-            }
-        )
-        self.rag_chain = (
-            set_ret | self.prompt_template | self.chat_model | StrOutputParser()
-        )
 
     def generate_response(self, user_id: str, query: str):
         """Generate a chatbot response while maintaining history"""
+        # Get chat history for this user or initialize an empty list
         history = self.chat_histories.get(user_id, [])
 
         try:
@@ -92,19 +78,36 @@ class ChatbotService:
                 raise ValueError("Query cannot be empty")
 
             print(f"[DEBUG] Generating response for User ID: {user_id}")
+            print(f"[DEBUG] Input query: {query}")
 
-            print(f"[DEBUG] Input to RAG chain: {query}")
+            # Format the history as a string
+            formatted_history = "\n".join(history)
+            print(f"[DEBUG] Current history: {formatted_history}")
 
-            # Generate response using RAG pipeline
-            print("[DEBUG] Generating response using RAG pipeline...")
-            response = self.rag_chain.invoke(query)
+            # Get context from retriever
+            context_docs = self.retriever.invoke(query)
+            context = "\n".join([doc.page_content for doc in context_docs])
+
+            # Prepare inputs for the prompt template
+            inputs = {"context": context, "query": query, "history": formatted_history}
+
+            print(f"[DEBUG] Preparing prompt with inputs...")
+
+            # Generate the prompt
+            prompt = self.prompt_template.format(**inputs)
+
+            # Generate response using the chat model
+            print("[DEBUG] Generating response using chat model...")
+            response = self.chat_model.invoke(prompt).content
             print(f"[DEBUG] Response Generated: {response}")
 
             # Update chat history (limit to last 10 messages)
             history.append(f"User: {query}")
             history.append(f"Bot: {response}")
-            print(f"[DEBUG]: Chat history: {history}")
+
+            # Store only the last 10 messages
             self.chat_histories[user_id] = history[-10:]
+            print(f"[DEBUG] Updated chat history: {self.chat_histories[user_id]}")
 
             return response
         except Exception as e:
