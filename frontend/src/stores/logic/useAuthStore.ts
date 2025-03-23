@@ -13,7 +13,7 @@ interface AuthStore {
   loading: boolean;
   signUp: (name: string, email: string, password: string) => Promise<boolean>;
   signIn: (identifier: string, password: string) => Promise<boolean>;
-  getUser: () => void;
+  getUser: () => Promise<void>;
   logout: () => void;
 }
 
@@ -23,7 +23,7 @@ const userApi = createApi("api/user");
 const useAuthStore = create<AuthStore>((set) => ({
   user: null,
   isAuthenticated: false,
-  loading: false,
+  loading: true,
   signUp: async (username, email, password) => {
     try {
       const usernameValue = username.trim().toLowerCase();
@@ -49,9 +49,10 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   signIn: async (identifier, password) => {
+    set({ loading: true });
     try {
       const response = await authApi.post("/login", { identifier, password });
-      set({ user: response.data.user, isAuthenticated: true });
+      set({ user: response.data.user, isAuthenticated: true, loading: false });
       toast({
         title: "Login successful",
         description: "You have been logged in",
@@ -59,6 +60,7 @@ const useAuthStore = create<AuthStore>((set) => ({
       });
       return true;
     } catch (error: any) {
+      set({ loading: false });
       toast({
         title: "Login failed",
         description: error.response.data.message,
@@ -88,7 +90,6 @@ const useAuthStore = create<AuthStore>((set) => ({
   },
 
   getUser: async () => {
-    set({ loading: true }); // Start loading
     try {
       const response = await userApi.get("/");
       set({ user: response.data.user, isAuthenticated: true, loading: false });

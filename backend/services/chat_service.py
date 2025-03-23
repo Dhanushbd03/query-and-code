@@ -1,14 +1,17 @@
 from models import Conversation, Message
+from utils import create_response
 
 
 def getMessages(conversation_id, user):
     """Fetch a conversation and its message history for a user."""
     conversation = Conversation.query.filter_by(
-        id=conversation_id, user_id=user.id
+        id=conversation_id, 
+        user_id=user.id,
+        deleted_at=None  # Only get non-deleted conversations
     ).first()
 
     if not conversation:
-        return "Conversation not found", None, 404
+        return create_response(False, None, "Conversation not found", 404)
 
     messages = (
         Message.query.filter_by(conversation_id=conversation.id)
@@ -27,14 +30,16 @@ def getMessages(conversation_id, user):
         for msg in messages
     ]
 
-    return "", history, 200
+    return create_response(True, history, "Messages retrieved successfully", 200)
 
 
 def getConversations(user, language_id):
-    """Fetch all conversations for a user with the first message as the title."""
+    """Fetch all non-deleted conversations for a user with the first message as the title."""
     try:
         conversations = Conversation.query.filter_by(
-            user_id=str(user.id), language_id=str(language_id)
+            user_id=str(user.id), 
+            language_id=str(language_id),
+            deleted_at=None  # Only get non-deleted conversations
         ).all()
 
         response = []
@@ -45,7 +50,6 @@ def getConversations(user, language_id):
                 .order_by(Message.timestamp.asc())
                 .first()
             )
-            print(first_message)
             title = first_message.message if first_message else "Untitled"
 
             # Serialize the conversation and add the title
@@ -53,6 +57,6 @@ def getConversations(user, language_id):
             conv_data["title"] = title  # Add title field
             response.append(conv_data)
 
-        return response, 200
+        return create_response(True, response, "Conversations retrieved successfully", 200)
     except Exception as e:
-        return str(e), 500
+        return create_response(False, None, f"Failed to get conversations: {str(e)}", 500)

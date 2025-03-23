@@ -11,7 +11,7 @@ export interface Message {
   timestamp: string;
 }
 export interface Conversation {
-  id: number;
+  id: string;
   user_id: string;
   language_id: number;
   title: string;

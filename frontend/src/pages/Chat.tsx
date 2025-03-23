@@ -5,7 +5,6 @@ import useSidebar from "@/stores/ui/useSidebar";
 
 export default function Chat() {
   const { is_sidebar_open } = useSidebar();
-
   return (
     <div className="flex h-full relative min-w-[320px] w-full">
       <Sidebar

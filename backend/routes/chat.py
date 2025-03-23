@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from models import db, Conversation, Message, Language
 from utils import create_response
 from services import ChatbotService, getMessages, getConversations
-from middleware import token_required  # Move token logic to a separate file
+from middleware import token_required
 
 chat_bp = Blueprint("chat", __name__)
 
@@ -72,7 +72,7 @@ def send_message(user):
         return create_response(True, bot_response, "Message received successfully", 201)
     except Exception as e:
         return create_response(
-            False, None, "Something went wrong , please reload and check ", 500
+            False, None, "Something went wrong , please reload and check " + str(e) , 500
         )
 
 
@@ -106,3 +106,18 @@ def GetConversations(user , language_id):
         create_response(True, response, "conversations fetched successfully", 200),
         200,
     )
+
+@chat_bp.route("/<conversation_id>", methods=["DELETE"])
+@token_required
+def delete_conversation(user, conversation_id):
+    """Delete a conversation by ID."""
+    try:
+        conversation = Conversation.query.filter_by(id=conversation_id, user_id=user.id).first()
+        if not conversation:
+            return create_response(False, None, "Conversation not found", 404)
+        
+        conversation.soft_delete()
+        return create_response(True, None, "Conversation deleted successfully", 200)
+    except Exception as e:
+        db.session.rollback()  # Rollback in case of error
+        return create_response(False, None, f"Failed to delete conversation: {str(e)}", 500)

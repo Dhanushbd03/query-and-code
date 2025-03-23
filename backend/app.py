@@ -2,6 +2,7 @@ from flask import Flask
 from dotenv import load_dotenv
 from models import db
 from routes import main_bp
+from routes.admin import admin_bp
 from flask_cors import CORS
 from flask_migrate import Migrate
 import os
@@ -30,6 +31,7 @@ migrate = Migrate(app, db)
 # Register blueprints
 try:
     app.register_blueprint(main_bp, url_prefix='/api')
+    app.register_blueprint(admin_bp, url_prefix='/api/admin')
 except Exception as e:
     print(f"Error registering blueprint: {str(e)}")
     exit(1)

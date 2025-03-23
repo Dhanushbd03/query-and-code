@@ -8,14 +8,15 @@ interface ChatStore {
   conversations: Conversation[];
   loading: boolean;
   c_loading: boolean;
-  getMessages: (conv_id: string) => Promise<void>;
+  getMessages: (conv_id: string) => Promise<boolean>;
   sendMessage: (
     language_id: string,
     conversation_id: string,
     message: string
   ) => Promise<void>;
   addNewChat: (lang_id: string) => Promise<Response | null>;
-  getConversations: (lang_id: string) => Promise<void>;
+  getConversations: (lang_id: string) => Promise<boolean>;
+  deleteConversation: (conv_id: string, lang_id: string) => Promise<boolean>;
 }
 
 const chat_api = createApi("api/chat");
@@ -29,11 +30,18 @@ const useChat = create<ChatStore>((set, get) => ({
   getMessages: async (conv_id: string) => {
     if (!conv_id) {
       toast({
-        title: "Error",
-        description: "Conversation ID is missing",
+        title: "Error", 
+        description: "Conversation ID not found",
         variant: "destructive",
       });
-      return;
+      return false;
+    }else if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(conv_id)){
+      toast({
+        title: "Error",
+        description: "Invalid conversation ID",
+        variant: "destructive",
+      });
+      return false;
     }
 
     set({ c_loading: true });
@@ -42,12 +50,14 @@ const useChat = create<ChatStore>((set, get) => ({
       const { data }: Response = await chat_api.get(`/messages/${conv_id}`);
       if (data.success) {
         set({ messages: data.data });
+        return true;
       } else {
         toast({
           title: "Error",
           description: "Failed to fetch messages",
           variant: "destructive",
         });
+        return false;
       }
     } catch {
       toast({
@@ -55,6 +65,7 @@ const useChat = create<ChatStore>((set, get) => ({
         description: "Failed to fetch messages",
         variant: "destructive",
       });
+      return false;
     } finally {
       set({ c_loading: false });
     }
@@ -145,13 +156,27 @@ const useChat = create<ChatStore>((set, get) => ({
     set({ loading: true });
 
     try {
+      if (!lang_id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(lang_id)){
+        toast({
+          title: "Error",
+          description: "Invalid language ID",
+          variant: "destructive",
+        });
+        return false;
+      }
       const { data }: Response = await chat_api.get(
         `/${lang_id}/conversations`
       );
       if (data.success) {
         set({ conversations: data.data });
+        return true;
       } else {
-        throw new Error(`Failed to fetch conversations`);
+        toast({
+          title: "Error",
+          description: "Failed to fetch conversations",
+          variant: "destructive",
+        });
+        return false;
       }
     } catch (e: any) {
       toast({
@@ -159,6 +184,7 @@ const useChat = create<ChatStore>((set, get) => ({
         description: e.message,
         variant: "destructive",
       });
+      return false;
     } finally {
       set({ loading: false });
     }
@@ -191,6 +217,48 @@ const useChat = create<ChatStore>((set, get) => ({
       return null;
     } finally {
       set({ loading: false });
+    }
+  },
+  deleteConversation: async (conv_id: string, lang_id: string) => {
+    if (!conv_id || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(conv_id)) {
+      toast({
+        title: "Error",
+        description: "Invalid conversation ID",
+        variant: "destructive",
+      });
+      return false;
+    }
+
+    try {
+      const { data }: Response = await chat_api.delete(`/${conv_id}`);
+      console.log(data);
+      if (data.success) {
+        set(state => ({
+          conversations: state.conversations.filter(conv => conv.id !== conv_id)
+        }));
+        get().getConversations(lang_id);
+        toast({
+          title: "Success",
+          description: "Conversation deleted successfully",
+          variant: "success",
+        });
+        return true;
+      } else {
+        toast({
+          title: "Error",
+          description: data.message,
+          variant: "destructive",
+        });
+        return false;
+      }
+    } catch (e: any) {
+      console.log(e);
+      toast({
+        title: "Error",
+        description: e.message,
+        variant: "destructive",
+      });
+      return false;
     }
   },
 }));

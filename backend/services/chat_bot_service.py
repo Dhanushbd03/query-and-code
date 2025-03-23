@@ -80,9 +80,8 @@ However, if the user asks something completely unrelated or outside your experti
             print(f"[DEBUG] Generating response for User ID: {user_id}")
             print(f"[DEBUG] Input query: {query}")
 
-            # Format the history as a string
+            # Format thxe history as a string
             formatted_history = "\n".join(history)
-            print(f"[DEBUG] Current history: {formatted_history}")
 
             # Get context from retriever
             context_docs = self.retriever.invoke(query)
@@ -91,20 +90,12 @@ However, if the user asks something completely unrelated or outside your experti
             # Prepare inputs for the prompt template
             inputs = {"context": context, "query": query, "history": formatted_history}
 
-            print(f"[DEBUG] Preparing prompt with inputs...")
 
             # Generate the prompt
             prompt = self.prompt_template.format(**inputs)
 
             # Generate response using the chat model
-            print("[DEBUG] Generating response using chat model...")
             response = self.chat_model.invoke(prompt).content
-            print(f"[DEBUG] Response Generated: {response}")
-
-            # Update chat history (limit to last 10 messages)
-            history.append(f"User: {query}")
-            history.append(f"Bot: {response}")
-
             # Store only the last 10 messages
             self.chat_histories[user_id] = history[-10:]
             print(f"[DEBUG] Updated chat history: {self.chat_histories[user_id]}")
