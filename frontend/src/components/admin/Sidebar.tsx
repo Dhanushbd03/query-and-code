@@ -1,4 +1,5 @@
-import { LayoutDashboard, Database, Settings } from "lucide-react"
+import { LayoutDashboard, Database, Settings, BookOpen, Code } from "lucide-react"
+import { FaVectorSquare } from "react-icons/fa6"
 import { NavLink } from "react-router-dom"
 
 export default function Sidebar() {
@@ -33,6 +34,45 @@ export default function Sidebar() {
           <span>Users</span>
         </NavLink>
         <NavLink
+          to="/admin/languages"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+              isActive
+                ? "bg-ctp-surface1 text-ctp-text border border-ctp-flamingo"
+                : "text-ctp-subtext0 hover:bg-ctp-surface1 hover:text-ctp-text"
+            }`
+          }
+        >
+          <Code className="h-5 w-5" />
+          <span>Languages</span>
+        </NavLink>
+        <NavLink
+          to="/admin/data-collection"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+              isActive
+                ? "bg-ctp-surface1 text-ctp-text border border-ctp-flamingo"
+                : "text-ctp-subtext0 hover:bg-ctp-surface1 hover:text-ctp-text"
+            }`
+          }
+        >
+          <BookOpen className="h-5 w-5" />
+          <span>Data Collection</span>
+        </NavLink>
+        <NavLink
+          to="/admin/vectorization"
+          className={({ isActive }) =>
+            `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
+              isActive
+                ? "bg-ctp-surface1 text-ctp-text border border-ctp-flamingo"
+                : "text-ctp-subtext0 hover:bg-ctp-surface1 hover:text-ctp-text"
+            }`
+          }
+        >
+          <FaVectorSquare className="h-5 w-5" />
+          <span>Vectorization</span>
+        </NavLink>
+        <NavLink
           to="/admin/settings"
           className={({ isActive }) =>
             `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
@@ -45,6 +85,7 @@ export default function Sidebar() {
           <Settings className="h-5 w-5" />
           <span>Settings</span>
         </NavLink>
+
       </nav>
     </div>
   )

@@ -1,6 +1,7 @@
 from models import User, db, Conversation
 from sqlalchemy import text, func
 from datetime import datetime
+from utils import create_response
 
 
 def GetAllUsersService():

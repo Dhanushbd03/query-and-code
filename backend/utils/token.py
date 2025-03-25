@@ -10,7 +10,6 @@ def generate_token(user_id):
         "exp": datetime.datetime.utcnow() + datetime.timedelta(hours=24)
     }
     token = jwt.encode(payload, os.getenv("SECRET_KEY"), algorithm="HS256")
-    print(f"Generated Token: {token}")  # Debugging
     return token
 
 def verify_token(token):

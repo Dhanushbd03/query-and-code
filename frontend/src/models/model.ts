@@ -18,8 +18,8 @@ export interface Conversation {
   created_at: string;
 }
 export interface Language {
-  id: number;
+  id: string;
   name: string;
-  description: string;
-  icon: string;
+  description?: string;
+  github_url?: string;
 }

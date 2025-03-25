@@ -1,4 +1,6 @@
 {
   "git.ignoreLimitWarning": true,
-  "workbench.colorTheme": "Esmerald"
+  "workbench.colorTheme": "Esmerald",
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.autoImportCompletions": false
 }

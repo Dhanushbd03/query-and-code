@@ -3,35 +3,15 @@ from models.admin import Admin
 from models import db
 import jwt
 from datetime import datetime, timedelta
-from functools import wraps
 from utils.config import SECRET_KEY
 from utils import create_response
 from services import GetAllUsersService
+from middleware import admin_required
 
 admin_bp = Blueprint('admin', __name__)
 
 if not SECRET_KEY:
     raise ValueError("❌ SECRET_KEY is not set in the environment variables!")
-
-def admin_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = request.cookies.get('admin_token')
-        if not token:
-            return create_response(False, None, "Admin token is missing", 401)
-        try:
-            data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
-            current_admin = Admin.query.get(data['admin_id'])
-            if not current_admin:
-                return create_response(False, None, "Admin not found", 401)
-        except jwt.ExpiredSignatureError:
-            return create_response(False, None, "Admin token has expired", 401)
-        except jwt.InvalidTokenError:
-            return create_response(False, None, "Admin token is invalid", 401)
-        except Exception as e:
-            return create_response(False, None, "Admin authentication error", 401)
-        return f(current_admin, *args, **kwargs)
-    return decorated
 
 @admin_bp.route('/login', methods=['POST'])
 def admin_login():

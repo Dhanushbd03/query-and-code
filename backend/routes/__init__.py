@@ -5,15 +5,17 @@ main_bp = Blueprint("main", __name__)
 from .auth import auth_bp
 from .chat import chat_bp
 from .user import user_bp
-from .indexing_route import indexing_bp
 from .language_routes import language_bp
 from .scrape_files import script_bp
 from .admin import admin_bp
+from .analytics import analytics_bp
+from .indexing_route import indexing_bp
 
 main_bp.register_blueprint(auth_bp, url_prefix="/auth")
 main_bp.register_blueprint(chat_bp, url_prefix="/chat")
 main_bp.register_blueprint(user_bp, url_prefix="/user")
-main_bp.register_blueprint(indexing_bp, url_prefix="/index")
 main_bp.register_blueprint(language_bp, url_prefix="/languages")
 main_bp.register_blueprint(script_bp, url_prefix="/scrape")
 main_bp.register_blueprint(admin_bp, url_prefix="/admin")
+main_bp.register_blueprint(analytics_bp, url_prefix="/analytics")
+main_bp.register_blueprint(indexing_bp, url_prefix="/indexing")

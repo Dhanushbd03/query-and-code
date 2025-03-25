@@ -7,7 +7,7 @@ def getMessages(conversation_id, user):
     conversation = Conversation.query.filter_by(
         id=conversation_id, 
         user_id=user.id,
-        deleted_at=None  # Only get non-deleted conversations
+        deleted_at=None
     ).first()
 
     if not conversation:
@@ -23,7 +23,7 @@ def getMessages(conversation_id, user):
         {
             "id": msg.id,
             "conversation_id": conversation.id,
-            "sender": msg.sender,
+            "sender": msg.sender,   
             "message": msg.message,
             "timestamp": msg.timestamp,
         }
@@ -34,17 +34,15 @@ def getMessages(conversation_id, user):
 
 
 def getConversations(user, language_id):
-    """Fetch all non-deleted conversations for a user with the first message as the title."""
     try:
         conversations = Conversation.query.filter_by(
             user_id=str(user.id), 
             language_id=str(language_id),
-            deleted_at=None  # Only get non-deleted conversations
+            deleted_at=None
         ).all()
 
         response = []
         for conv in conversations:
-            # Fetch the first message for the conversation
             first_message = (
                 Message.query.filter_by(conversation_id=conv.id)
                 .order_by(Message.timestamp.asc())
@@ -52,11 +50,10 @@ def getConversations(user, language_id):
             )
             title = first_message.message if first_message else "Untitled"
 
-            # Serialize the conversation and add the title
             conv_data = conv.serialize_with_iso_dates()
-            conv_data["title"] = title  # Add title field
+            conv_data["title"] = title  
             response.append(conv_data)
 
-        return create_response(True, response, "Conversations retrieved successfully", 200)
+        return response, 200
     except Exception as e:
-        return create_response(False, None, f"Failed to get conversations: {str(e)}", 500)
+        return str(e), 500

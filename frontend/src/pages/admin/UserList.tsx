@@ -18,9 +18,6 @@ export default function UsersList() {
   const [search_term, set_search_term] = useState("")
 
   useEffect(() => {
-    if (!is_authenticated) {
-      navigate('/admin/signin')
-    }
     getAllUsers()
   }, [is_authenticated, navigate])
 

@@ -7,32 +7,130 @@ const lang_api = createApi("api/languages");
 
 interface LanguageStore {
   languages: Language[];
+  loading: boolean;
+  error: string | null;
   getLanguages: () => Promise<void>;
-  l_loading: boolean;
+  addLanguage: (name: string, description?: string, github_url?: string) => Promise<void>;
+  updateLanguage: (id: string, data: Partial<Language>) => Promise<void>;
+  deleteLanguage: (id: string) => Promise<void>;
 }
 
 const useLanguage = create<LanguageStore>((set) => ({
   languages: [],
-  l_loading: false,
+  loading: false,
+  error: null,
 
   getLanguages: async () => {
-    set({ l_loading: true });
-
     try {
-      const { data } = await lang_api.get("/");
-      if (data.success) {
-        set({ languages: data.data });
+      set({ loading: true, error: null });
+      const response = await lang_api.get("/");
+      if (response.data.success) {
+        set({ languages: response.data.data });
       } else {
-        throw new Error(data.message);
+        throw new Error(response.data.message);
       }
     } catch (error: any) {
+      set({ error: error.message });
       toast({
         title: "Error",
-        description: error.message || "Something went wrong",
+        description: "Failed to fetch languages",
         variant: "destructive",
       });
     } finally {
-      set({ l_loading: false });
+      set({ loading: false });
+    }
+  },
+
+  addLanguage: async (name: string, description?: string, github_url?: string) => {
+    try {
+      set({ loading: true, error: null });
+      const response = await lang_api.post("/", {
+        name,
+        description,
+        github_url,
+      });
+      if (response.data.success) {
+        set((state) => ({
+          languages: [...state.languages, response.data.data],
+        }));
+        toast({
+          title: "Success",
+          description: "Language added successfully",
+          variant: "success",
+        });
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error: any) {
+      set({ error: error.message });
+      toast({
+        title: "Error",
+        description: "Failed to add language",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  updateLanguage: async (id: string, data: Partial<Language>) => {
+    try {
+      set({ loading: true, error: null });
+      const response = await lang_api.put(`/${id}`, data);
+      if (response.data.success) {
+        set((state) => ({
+          languages: state.languages.map((lang) =>
+            lang.id === id ? { ...lang, ...response.data.data } : lang
+          ),
+        }));
+        toast({
+          title: "Success",
+          description: "Language updated successfully",
+          variant: "success",
+        });
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error: any) {
+      set({ error: error.message });
+      toast({
+        title: "Error",
+        description: "Failed to update language",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  deleteLanguage: async (id: string) => {
+    try {
+      set({ loading: true, error: null });
+      const response = await lang_api.delete(`/${id}`);
+      if (response.data.success) {
+        set((state) => ({
+          languages: state.languages.filter((lang) => lang.id !== id),
+        }));
+        toast({
+          title: "Success",
+          description: "Language deleted successfully",
+          variant: "success",
+        });
+      } else {
+        throw new Error(response.data.message);
+      }
+    } catch (error: any) {
+      set({ error: error.message });
+      toast({
+        title: "Error",
+        description: "Failed to delete language",
+        variant: "destructive",
+      });
+      throw error;
+    } finally {
+      set({ loading: false });
     }
   },
 }));

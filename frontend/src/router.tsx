@@ -9,6 +9,10 @@ import AdminLayout from "./layout/AdminLayout";
 import UsersList from "@/pages/admin/UserList";
 import Settings from "@/pages/admin/Settings";
 import Dashboard from "@/pages/admin/Dashboard";
+import Languages from "@/pages/admin/Languages";
+import DataCollection from "./components/admin/DataCollection/DataCollection";
+import Vectorization from "./components/admin/Vectorization/Vectorization";
+
 const routes: RouteObject[] = [
   {
     path: "/",
@@ -35,14 +39,23 @@ const routes: RouteObject[] = [
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ProtectedRoute>
+        <AdminLayout />
+      </ProtectedRoute>
+    ),
     children: [
-      { path: "signin", element: <AdminSignIn /> },
       { index: true, element: <Dashboard /> },
       { path: "users", element: <UsersList /> },
+      { path: "languages", element: <Languages /> },
+      { path: "data-collection", element: <DataCollection /> },
+      { path: "vectorization", element: <Vectorization /> },
       { path: "settings", element: <Settings /> },
-      {path:"Context",element:<Context/>}
     ],
+  },
+  {
+    path: "/admin/signin",
+    element: <AdminSignIn />,
   },
 ];
 
